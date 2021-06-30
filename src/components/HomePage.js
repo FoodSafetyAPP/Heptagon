@@ -1,18 +1,22 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { history } from '../helpers/history';
-import { logout } from "../store/Actions/UserActions";
+import { logout, updateList } from "../store/Actions/UserActions";
+import { records } from "../assets/data";
+import Chart from "./chart/Chart";
 
 class HomePage extends Component {
   componentDidMount() {
-    const { loggedIn } = this.props;
+    const { loggedIn, updateList } = this.props;
     if (!loggedIn) {
       history.replace("/login");
+    } else {
+      updateList(records);
     }
   }
 
   render() {
-    const { userLogout } = this.props;
+    const { userLogout, dataList } = this.props;
     return (
       <div className="container py-3">
         <header>
@@ -22,18 +26,42 @@ class HomePage extends Component {
             </nav>
           </div>
         </header>
+        {dataList.length > 0 ?
+          <table className="table">
+            <thead>
+              <tr>
+                <th scope="col">Description</th>
+                <th scope="col">Date</th>
+                <th scope="col">Price</th>
+              </tr>
+            </thead>
+            <tbody>
+              {dataList.map((data) => {
+                return (
+                  <tr key={data.id}>
+                    <td>{data.description}</td>
+                    <td>{data.date}</td>
+                    <td>{data.price}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+          : ""}
+        <Chart />
       </div>
     )
   }
 }
 
 const actionCreators = {
-  userLogout: logout
+  userLogout: logout,
+  updateList: updateList
 };
 
 const mapState = (state) => {
   const { auth } = state;
-  return { loggedIn: auth.loggedIn };
+  return { loggedIn: auth.loggedIn, dataList: auth.dataList };
 }
 
 export default connect(mapState, actionCreators)(HomePage);
