@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import parse from "html-react-parser";
 import { history } from '../helpers/history';
 import { logout, updateList } from "../store/Actions/UserActions";
 import { records } from "../assets/data";
 import Chart from "./chart/Chart";
+import "./HomePage.css";
 
 class HomePage extends Component {
 
@@ -47,16 +49,23 @@ class HomePage extends Component {
     let descstr = "";
     let countWords = [];
     dataList.forEach(element => {
-      descstr = descstr + " " + element.description.toLowerCase();
+      descstr = descstr + " " + element.description;
     });
     descstr = descstr.trim();
 
     this.setState({
       typingTimeout: setTimeout(() => {
         let arr = [];
-        arr = e.target.value.trim() !== "" ? e.target.value.toLowerCase().replace(/\s+/g, ' ').trim().split(" ") : [];
-        const list = records.filter(listObject => new RegExp(arr.join("|")).test(listObject.description.toLowerCase()) !== false);
-        updateList(list);
+        arr = e.target.value.trim() !== "" ? e.target.value.replace(/\s+/g, ' ').trim().split(" ") : [];
+
+        const list = records.filter(listObject => new RegExp(arr.join("|")).test(listObject.description) !== false);
+        const matchedResult = list.map(el => {
+          const match = el.description.match(new RegExp(arr.join("|"), "g"));
+          return {
+            ...el, matched: match
+          }
+        });
+        updateList(matchedResult);
 
         arr.forEach((element) => {
           const data = element.trim();
@@ -91,9 +100,15 @@ class HomePage extends Component {
           </thead>
           <tbody>
             {dataList.length > 0 ? dataList.map((data) => {
+
+              let desc = data.description;
+              data.matched.forEach(element => {
+                desc = desc.replace(element, "<span class='active'>" + element + "</span>");
+              });
+
               return (
                 <tr key={data.id}>
-                  <td>{data.description}</td>
+                  <td>{parse(desc)}</td>
                   <td>{data.date}</td>
                   <td>{data.price}</td>
                 </tr>
@@ -102,7 +117,7 @@ class HomePage extends Component {
           </tbody>
         </table>
         <Chart searchKeyword={occurence} />
-      </div>
+      </div >
     )
   }
 }
