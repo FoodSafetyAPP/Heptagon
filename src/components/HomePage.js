@@ -53,7 +53,7 @@ class HomePage extends Component {
 
     this.setState({
       typingTimeout: setTimeout(() => {
-        const arr = e.target.value.trim().split(" ");
+        const arr = e.target.value.toLowerCase().trim().split(" ");
         arr.forEach((element) => {
           const data = element.trim();
           const count = this.countOccurrences(descstr, data);
