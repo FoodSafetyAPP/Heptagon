@@ -58,14 +58,21 @@ class HomePage extends Component {
         let arr = [];
         arr = e.target.value.trim() !== "" ? e.target.value.replace(/\s+/g, ' ').trim().split(" ") : [];
 
-        const list = records.filter(listObject => new RegExp(arr.join("|")).test(listObject.description) !== false);
-        const matchedResult = list.map(el => {
-          const match = el.description.match(new RegExp(arr.join("|"), "g"));
-          return {
-            ...el, matched: match
-          }
+        let listArr = [];
+        records.forEach(listObject => {
+          let selected = [];
+          arr.forEach(element => {
+            if (this.countOccurrences(listObject.description, element) > 0) {
+              selected.push(element);
+            }
+          });
+          listArr.push({
+            ...listObject,
+            matched: selected
+          });
         });
-        updateList(matchedResult);
+
+        updateList(listArr);
 
         arr.forEach((element) => {
           const data = element.trim();
@@ -103,7 +110,13 @@ class HomePage extends Component {
 
               let desc = data.description;
               data.matched.forEach(element => {
-                desc = desc.replace(element, "<span class='active'>" + element + "</span>");
+                let descArr = desc.split(" ");
+                for (let i = 0; i < descArr.length; i++) {
+                  if (element === (descArr[i])) {
+                    descArr[i] = "<span class='active'>" + element + "</span>";
+                  }
+                }
+                desc = descArr.join(" ");
               });
 
               return (
