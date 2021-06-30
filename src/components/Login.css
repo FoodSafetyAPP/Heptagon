@@ -37,3 +37,8 @@ body {
   border-top-right-radius: 0;
   box-shadow: none;
 }
+
+.login_det {
+  margin-top: 10px;
+  text-align: left;
+}

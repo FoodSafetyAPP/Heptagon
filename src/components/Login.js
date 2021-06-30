@@ -53,7 +53,7 @@ class Login extends React.Component {
         }
         <form name="form" onSubmit={this.handleSubmit}>
           <img className="mb-4" src={logo} alt="logo" width="72" height="57" />
-          <h1 className="h3 mb-3 fw-normal">Please sign in</h1>
+          <h1 className="h3 mb-3 fw-normal">LOGIN</h1>
           <div className="form-floating">
             <input autoComplete="off" type="text" className="form-control" id="username" name="username" placeholder="name@example.com" onChange={this.handleChange} />
             <label htmlFor="username">Username</label>
@@ -70,6 +70,10 @@ class Login extends React.Component {
           </div>
           <button className="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
         </form>
+        <div className="alert alert-success login_det" role="alert">
+          <p>Username: admin</p>
+          <p>Password: password</p>
+        </div>
       </main>
     );
   }
