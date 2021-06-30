@@ -1,5 +1,5 @@
 import { userConstants } from '../Constants/UserConstants';
-import { userLogin, userLogout } from "../../middleware/UserMiddleware";
+import { userLogin } from "../../middleware/UserMiddleware";
 import { alertError, alertClear, alertSuccess } from "./AlertActions";
 import { history } from "../../helpers/history";
 
