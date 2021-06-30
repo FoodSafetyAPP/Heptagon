@@ -32,3 +32,9 @@ export const logout = () => {
     history.replace('/login');
   }
 }
+
+export const updateList = (data) => {
+  return dispatch => {
+    dispatch({ type: userConstants.UPDATE_LIST, payload: data });
+  }
+}

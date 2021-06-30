@@ -1,0 +1,67 @@
+.q_graph {
+  display: block;
+  margin: 1.1em 0 0;
+  padding: 0;
+  background: transparent;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
+.mwb_bar {
+  position: relative;
+  max-width: 630px;
+  margin: 0 auto;
+}
+.q_graph .qtr {
+  position: absolute;
+  bottom: 0;
+  z-index: 2;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+.q_graph .q1 {
+  left: 75px;
+  bottom: 59px;
+}
+.q_graph .headData {
+  bottom: -3.75em;
+  vertical-align: top;
+  font-weight: normal;
+}
+.q_graph .bar {
+  width: 60px;
+  border: 1px solid;
+  border-bottom: none;
+  color: #000;
+}
+.q_graph .bar .price {
+  margin: 5px 0 0;
+  padding: 0;
+  top: -40px;
+  position: relative;
+  color: #2a3536;
+}
+.q_graph .sent {
+  background-color: #49dcfa;
+  border-color: transparent;
+  height: 100px;
+}
+
+.ticks {
+  margin-top: 40px;
+}
+
+.ticks .tick {
+  position: relative;
+  margin-left: 20px;
+  border-top: 1px solid #c4c4c4;
+  height: 59px;
+}
+
+.ticks .tick .priceLst {
+  position: absolute;
+  left: -2em;
+  top: -0.8em;
+  margin: 0 0 0 0.5em;
+}
