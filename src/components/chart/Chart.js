@@ -10,9 +10,10 @@ function Chart(props) {
       <table className={classess.q_graph}>
         <tbody>
           {
-            searchKeyword.map((value) => {
+            searchKeyword.map((value, index) => {
+              const leftCSS = (index + 1) * 75;
               return (
-                <tr className={`${classess.qtr} ${classess.q1}`} key={uuid()}>
+                <tr className={`${classess.qtr} ${classess.q1}`} key={uuid()} style={{ left: leftCSS + "px" }}>
                   <th scope='row' className={`${classess.qtr} ${classess.headData}`}>
                     {value.keyword}
                   </th>
