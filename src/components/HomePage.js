@@ -38,7 +38,7 @@ class HomePage extends Component {
 
   handleChange(e) {
     const { typingTimeout } = this.state;
-    const { dataList } = this.props;
+    const { dataList, updateList } = this.props;
 
     if (typingTimeout) {
       clearTimeout(typingTimeout);
@@ -53,7 +53,11 @@ class HomePage extends Component {
 
     this.setState({
       typingTimeout: setTimeout(() => {
-        const arr = e.target.value.toLowerCase().trim().split(" ");
+        let arr = [];
+        arr = e.target.value.trim() !== "" ? e.target.value.toLowerCase().replace(/\s+/g, ' ').trim().split(" ") : [];
+        const list = records.filter(listObject => new RegExp(arr.join("|")).test(listObject.description.toLowerCase()) !== false);
+        updateList(list);
+
         arr.forEach((element) => {
           const data = element.trim();
           const count = this.countOccurrences(descstr, data);
@@ -77,31 +81,27 @@ class HomePage extends Component {
             </nav>
           </div>
         </header>
-        <div>
-          {dataList.length > 0 ?
-            <table className="table">
-              <thead>
-                <tr>
-                  <th scope="col">Description</th>
-                  <th scope="col">Date</th>
-                  <th scope="col">Price</th>
+        <table className="table">
+          <thead>
+            <tr>
+              <th scope="col">Description</th>
+              <th scope="col">Date</th>
+              <th scope="col">Price</th>
+            </tr>
+          </thead>
+          <tbody>
+            {dataList.length > 0 ? dataList.map((data) => {
+              return (
+                <tr key={data.id}>
+                  <td>{data.description}</td>
+                  <td>{data.date}</td>
+                  <td>{data.price}</td>
                 </tr>
-              </thead>
-              <tbody>
-                {dataList.map((data) => {
-                  return (
-                    <tr key={data.id}>
-                      <td>{data.description}</td>
-                      <td>{data.date}</td>
-                      <td>{data.price}</td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-            : ""}
-          <Chart searchKeyword={occurence} />
-        </div>
+              );
+            }) : <tr><td colSpan="3">No records found</td></tr>}
+          </tbody>
+        </table>
+        <Chart searchKeyword={occurence} />
       </div>
     )
   }
