@@ -36,7 +36,11 @@ class Login extends React.Component {
     const { userLogin } = this.props;
     e.preventDefault();
 
-    this.setState({ submitted: true });
+    this.setState({ submitted: true }, () => {
+      setTimeout(() => {
+        this.setState({ submitted: false });
+      }, 1000)
+    });
     const { username, password } = this.state;
     if (username && password) {
       userLogin(username, password);
