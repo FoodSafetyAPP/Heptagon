@@ -4,8 +4,8 @@ import parse from "html-react-parser";
 import { v4 as uuidv4 } from 'uuid';
 import { history } from '../helpers/history';
 import { logout } from "../store/Actions/UserActions";
-import { records } from "../assets/data";
 import Chart from "./chart/Chart";
+import axios from "axios";
 import "./HomePage.css";
 
 class HomePage extends Component {
@@ -40,6 +40,7 @@ class HomePage extends Component {
 
   handleChange(e) {
     const { typingTimeout } = this.state;
+    const { userLogout } = this.props;
 
     if (typingTimeout) {
       clearTimeout(typingTimeout);
@@ -47,53 +48,69 @@ class HomePage extends Component {
 
     let descstr = "";
     let countWords = [];
-    records.forEach(element => {
-      descstr = descstr + " " + element.title;
-      if (element.description !== "") {
-        Object.values(element.description).forEach(descel => {
-          descstr = descstr + " " + descel;
-        });
-      }
-    });
-    descstr = descstr.trim();
+
+    const headers = {
+      'Content-Type': 'application/json',
+      "authorization": `Bearer ${localStorage.getItem("access_token")}`
+    };
+    const key_search = e.target.value.replace(/\s+/g, ' ').trim();
 
     this.setState({
       typingTimeout: setTimeout(() => {
         let arr = [];
-        arr = e.target.value.trim() !== "" ? e.target.value.replace(/\s+/g, ' ').trim().split(" ") : [];
-
+        arr = e.target.value.trim() !== "" ? key_search.split(" ") : [];
         let listArr = [];
-        records.forEach(listObject => {
-          let selected = [];
-          arr.forEach(element => {
-            if ((this.countOccurrences(listObject.title, element) > 0) && !selected.includes(element)) {
-              selected.push(element);
-            }
-            if (listObject.description !== "") {
-              Object.values(listObject.description).forEach(descel => {
-                if ((this.countOccurrences(descel, element) > 0) && !selected.includes(element)) {
-                  selected.push(element);
+
+        axios
+          .get('/filter/' + key_search, { headers })
+          .then((res) => {
+            console.log(res);
+            if (res.data.success === true) {
+
+              res.data.data.forEach(element => {
+                descstr = descstr + " " + element.title;
+                if (element.description !== "") {
+                  Object.values(element.description).forEach(descel => {
+                    descstr = descstr + " " + descel;
+                  });
                 }
               });
+              descstr = descstr.trim();
+
+              res.data.data.forEach(listObject => {
+                let selected = [];
+                arr.forEach(element => {
+                  if ((this.countOccurrences(listObject.title, element) > 0) && !selected.includes(element)) {
+                    selected.push(element);
+                  }
+                  if (listObject.description !== "") {
+                    Object.values(listObject.description).forEach(descel => {
+                      if ((this.countOccurrences(descel, element) > 0) && !selected.includes(element)) {
+                        selected.push(element);
+                      }
+                    });
+                  }
+                });
+                listArr.push({
+                  ...listObject,
+                  matched: selected
+                });
+              });
+              this.setState({
+                dataList: listArr
+              })
+
+              arr.forEach((element) => {
+                const data = element.trim();
+                const count = this.countOccurrences(descstr, data);
+                countWords.push({ keyword: data, count });
+                this.setState({ occurence: countWords });
+              });
             }
+          })
+          .catch(() => {
+            userLogout();
           });
-          listArr.push({
-            ...listObject,
-            matched: selected
-          });
-        });
-        console.log(listArr);
-
-        this.setState({
-          dataList: listArr
-        })
-
-        arr.forEach((element) => {
-          const data = element.trim();
-          const count = this.countOccurrences(descstr, data);
-          countWords.push({ keyword: data, count });
-          this.setState({ occurence: countWords });
-        });
       }, 1000),
     });
   }
