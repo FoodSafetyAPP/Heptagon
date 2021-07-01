@@ -6,5 +6,10 @@ table tr,
 td,
 th {
   text-align: left;
+}
+
+.table tr,
+.table th,
+.table td {
   border: solid black 1px;
 }
