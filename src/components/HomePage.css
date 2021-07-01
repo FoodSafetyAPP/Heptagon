@@ -2,3 +2,7 @@
   color: #8306e0;
   font-weight: 600;
 }
+table tr td,
+th {
+  text-align: left;
+}

@@ -11,7 +11,7 @@ function Chart(props) {
         <tbody>
           {
             searchKeyword.map((value, index) => {
-              const leftCSS = (index + 1) * 75;
+              const leftCSS = (index + 1) * 150;
               return (
                 <tr className={`${classess.qtr} ${classess.q1}`} key={uuid()} style={{ left: leftCSS + "px" }}>
                   <th scope='row' className={`${classess.qtr} ${classess.headData}`}>

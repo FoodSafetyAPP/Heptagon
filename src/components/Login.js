@@ -83,8 +83,8 @@ class Login extends React.Component {
           </div>
         </form>
         <div className="alert alert-success login_det" role="alert">
-          <p>Username: admin</p>
-          <p>Password: password</p>
+          <p>Username: demo@admin.com</p>
+          <p>Password: password@123</p>
         </div>
       </main>
     );

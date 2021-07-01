@@ -4,13 +4,10 @@ import { Router } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { store, persistor } from './store/Store';
-import { demoBackend } from './helpers/demoBackend';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { history } from "./helpers/history";
-
-demoBackend();
 
 ReactDOM.render(
   <React.StrictMode>
