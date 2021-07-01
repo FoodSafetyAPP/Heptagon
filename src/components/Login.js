@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { login } from "../store/Actions/UserActions";
+import CircularIndeterminate from "../helpers/spinner";
 import { history } from "../helpers/history";
 import logo from '../assets/logo.png';
 import './Login.css';
@@ -68,7 +69,14 @@ class Login extends React.Component {
               <div className="help-block">Password is required</div>
             }
           </div>
-          <button className="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
+          <div>
+            <button className="w-100 btn btn-lg btn-primary signin" type="submit">
+              Sign in
+              {submitted &&
+                <CircularIndeterminate />
+              }
+            </button>
+          </div>
         </form>
         <div className="alert alert-success login_det" role="alert">
           <p>Username: admin</p>
