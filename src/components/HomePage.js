@@ -133,7 +133,7 @@ class HomePage extends Component {
             <tr>
               <th scope="col">Description</th>
               <th scope="col">Date</th>
-              <th scope="col">Price</th>
+              <th scope="col">Score</th>
             </tr>
           </thead>
           <tbody>
